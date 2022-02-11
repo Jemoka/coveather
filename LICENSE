@@ -277,6 +277,8 @@ YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
 
+                     END OF TERMS AND CONDITIONS
+
 "CLASSPATH" EXCEPTION TO THE GPL
 
     Linking this library statically or dynamically with other modules is making
@@ -293,5 +295,3 @@ POSSIBILITY OF SUCH DAMAGES.
     you modify this library, you may extend this exception to your version of
     the library, but you are not obligated to do so.  If you do not wish to do
     so, delete this exception statement from your version.
-
-                     END OF TERMS AND CONDITIONS
