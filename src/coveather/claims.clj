@@ -32,32 +32,29 @@
                                   (map #(:claims %) subclaims))))}))
 
 ;; Ticket requesting the claim be verified
-(defrecord ClaimVerificationTicket [claim state]
+(defrecord ClaimVerificationTicket [claim artifacts]
   Ticket
 
   (stamp
-    [this artifacts]
+    [this state]
     (let [fullclaim (unwrap-claim (:claim this)
-                                  (:claims (:state this)))]
+                                  (:claims state))
+          timestamp (quot (System/currentTimeMillis) 1000)]
       (map->Action {:type :verify
-                    :timestamp (quot (System/currentTimeMillis) 1000)
-                    :expiry (:expiry fullclaim)
+                    :timestamp timestamp
+                    :expires (+ (:expiry fullclaim) timestamp)
                     :body (:claims fullclaim)
-                    :payload artifacts})))
+                    :payload (:artifacts this)})))
 
-  (stamp
-    [this]
-    (stamp this nil))
+  (staple [this state verification] verification))
 
-  (staple [this verification] verification))
+(stamp (ClaimVerificationTicket. "status.testing.covid19.0.3" nil)
+       (utils/map->State {:claims claims-data/test-claims}))
 
-(stamp (ClaimVerificationTicket.
-        "status.testing.covid19.0.3"
-        (utils/map->State {:claims claims-data/test-claims})))
 
-()
 
-(extends? Ticket ClaimVerificationTicket)
+
+
 
 ;; Ticket requesting a new claim be proposed
 ;; (defrecord ClaimProposalTicket [claim]
