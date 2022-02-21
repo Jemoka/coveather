@@ -48,11 +48,15 @@
 
   (staple [this state verification] verification))
 
-(stamp (ClaimVerificationTicket. "status.testing.covid19.0.3" nil)
+
+
+(stamp (ClaimVerificationTicket. "status.testing.covid19.0.3"
+                                 (utils/encode-file "./project.clj"))
        (utils/map->State {:claims claims-data/test-claims}))
 
-
-
+(ClaimVerificationTicket. "status.testing.covid19.0.3"
+                          [(utils/encode-file "./project.clj")
+                           (utils/encode-file "./.gitignore")])
 
 
 
