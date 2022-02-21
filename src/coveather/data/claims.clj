@@ -5,11 +5,13 @@
      :id "artifact.vaccination.covid19.0"
      :name "COVID19 vaccine record card, United States"
      :identities ["identities.personal.0.0", "identities.personal.0.1"]
+     :playload true
      :expiry 0}
     {:type :artifact
      :id "artifact.testing.covid19.0"
      :name "COVID19 test lab report"
      :identities ["identities.personal.0.0", "identities.personal.0.1"]
+     :playload true
      :expiry 604800},
     {:type :status
      :id "status.vaccination.covid19.1"

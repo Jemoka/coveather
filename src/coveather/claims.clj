@@ -1,6 +1,9 @@
 (ns coveather.claims
   (:require [coveather.data.claims :as claims-data]
-            [coveather.tickets :refer [Ticket]]))
+            [coveather.tickets :refer [Ticket stamp staple]]
+            [coveather.utils :as utils]
+            [coveather.actions :refer [->Action
+                                       map->Action]]))
 
 ;;; Ticketing Claims
 ;; Helper function to unwrap a claim
@@ -28,20 +31,33 @@
                            (apply concat
                                   (map #(:claims %) subclaims))))}))
 
-
-
-
-(unwrap-claim "status.testing.covid19.1.3" claims-data/test-claims)
-
-
 ;; Ticket requesting the claim be verified
 (defrecord ClaimVerificationTicket [claim state]
   Ticket
 
   (stamp
-    "Stamp the ticket with an artifact and time"
+    [this artifacts]
+    (let [fullclaim (unwrap-claim (:claim this)
+                                  (:claims (:state this)))]
+      (map->Action {:type :verify
+                    :timestamp (quot (System/currentTimeMillis) 1000)
+                    :expiry (:expiry fullclaim)
+                    :body (:claims fullclaim)
+                    :payload artifacts})))
 
-    [this artifacts]))
+  (stamp
+    [this]
+    (stamp this nil))
+
+  (staple [this verification] verification))
+
+(stamp (ClaimVerificationTicket.
+        "status.testing.covid19.0.3"
+        (utils/map->State {:claims claims-data/test-claims})))
+
+()
+
+(extends? Ticket ClaimVerificationTicket)
 
 ;; Ticket requesting a new claim be proposed
 ;; (defrecord ClaimProposalTicket [claim]
