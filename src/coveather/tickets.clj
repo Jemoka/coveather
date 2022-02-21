@@ -1,6 +1,5 @@
 (ns coveather.tickets)
 
-
 ;;; Ticket Protocol
 (defprotocol Ticket
 

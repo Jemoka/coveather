@@ -2,6 +2,9 @@
   (:import [java.util Base64]
            [java.security MessageDigest]))
 
+;;; Blockchain Info Utilties
+(defrecord State [tickets agents verifiers
+                  claims identities])
 
 ;;; File Encoding Utilities
 (defn encode-file 
