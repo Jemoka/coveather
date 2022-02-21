@@ -5,7 +5,7 @@
 ;;; Ticketing Claims
 ;; Helper function to unwrap a claim
 (defn unwrap-claim
-  "Unwrap a string claim ID to its dependencies, given a claim library"
+  "Unwrap a string claim ID to its dependencies, items to be verified, min expiration date"
   
   [id claims]
 
@@ -15,11 +15,19 @@
     {:identities (distinct (concat (:identities claim)
                                    (apply concat
                                           (map #(:identities %) subclaims))))
+     :expiry (let [subclaim-min (apply min (cons
+                                            Integer/MAX_VALUE
+                                            (map #(:expiry %) subclaims)))]
+               (if (> (:expiry claim) 0)
+                 (min (:expiry claim) subclaim-min)
+                 subclaim-min))
      :claims (dedupe (cons (dissoc claim
                                    :identities
-                                   :inherits)
+                                   :inherits
+                                   :expiry)
                            (apply concat
                                   (map #(:claims %) subclaims))))}))
+
 
 
 
